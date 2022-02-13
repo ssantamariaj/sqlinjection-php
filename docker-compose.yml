@@ -1,0 +1,28 @@
+
+version: "3.2"
+
+services:
+  webapp:
+    build: .
+    ports:
+      - 8000:80
+    environment:
+      DB_HOST: db
+      DB_NAME: sqlidb
+      DB_USER: exampleuser
+      DB_PASSWORD: examplepass
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: sqlidb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      # descomentar si volem una DB amb persistència
+      - db:/var/lib/mysql
+      - ./sqlscripts:/docker-entrypoint-initdb.d
+volumes:
+  db:
+
